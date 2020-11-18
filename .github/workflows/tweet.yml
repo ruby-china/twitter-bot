@@ -2,21 +2,23 @@ name: tweet
 
 on:
   schedule:
-    - cron:  '42 10 * * *' # Tweet every 18:42 (GMT +8)
-
+    - cron: "0 1/2 * * *" # Tweet every 2nd hover
+  push:
+    branches:
+      - main
 jobs:
   tweet:
     runs-on: ubuntu-18.04
     steps:
-    - uses: actions/checkout@v1
-    - name: Setup ruby
-      uses: eregon/use-ruby-action@master
-      with:
-        ruby-version: 2.7
-    - name: Install Dependencies
-      run: |
-        gem install bundler
-        bundle install --jobs 4 --retry 3
-    - name: Build
-      run: |
-        ruby relay.rb
+      - uses: actions/checkout@v1
+      - name: Setup ruby
+        uses: eregon/use-ruby-action@master
+        with:
+          ruby-version: 2.7
+      - name: Install Dependencies
+        run: |
+          gem install bundler
+          bundle install --jobs 4 --retry 3
+      - name: Build
+        run: |
+          ruby relay.rb
