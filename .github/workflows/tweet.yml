@@ -5,12 +5,8 @@ on:
     - cron:  '42 10 * * *' # Tweet every 18:42 (GMT +8)
 
 jobs:
-  build-deploy:
+  tweet:
     runs-on: ubuntu-18.04
-    strategy:
-      matrix:
-        node-version: [8]
-
     steps:
     - uses: actions/checkout@v1
     - name: Setup ruby
