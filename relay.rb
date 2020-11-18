@@ -28,7 +28,7 @@ resp = Faraday.get(
 topics = JSON.parse(resp.body)["topics"]
 
 filtered = topics.reject do |topic|
-  # Time.now - DateTime.parse(topic["created_at"]).to_time > INTERVAL
+  Time.now - DateTime.parse(topic["created_at"]).to_time > INTERVAL
 end
 
 formatted = filtered.map do |topic|
