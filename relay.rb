@@ -26,7 +26,7 @@ filtered = topics.reject do |topic|
 end
 
 formatted = filtered.map do |topic|
-  "《#{topic['title']}》作者：#{topic['user']['name']}\n\nhttps://ruby-china.org/topics/#{topic['id']}\n\n（本消息由 Ruby China 机器人自动发送）"
+  "《#{topic['title']}》作者：#{topic['user']['name']}\n\nhttps://ruby-china.org/topics/#{topic['id']}"
 end
 
 formatted.each do |tweet|
