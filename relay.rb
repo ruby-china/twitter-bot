@@ -11,7 +11,7 @@ client = Twitter::REST::Client.new do |config|
   config.access_token_secret = ENV["ACCESS_TOKEN_SECRET"]
 end
 
-INTERVAL = 24 * 60 * 60 # 1 day
+INTERVAL = 2 * 60 * 60 # every 2 hours
 
 def get_user(login)
   resp = Faraday.get("https://ruby-china.org/api/v3/users/#{login}.json")
