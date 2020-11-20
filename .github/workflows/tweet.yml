@@ -2,7 +2,7 @@ name: tweet
 
 on:
   schedule:
-    - cron: "0 1/2 * * *" # Tweet every 2nd hover
+    - cron: "0 */2 * * *" # Tweet every 2nd hour
   push:
     branches:
       - main
