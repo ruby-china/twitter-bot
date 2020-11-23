@@ -20,6 +20,15 @@ rescue StandardError
   nil
 end
 
+def get_excellent_time(topic)
+  resp = Faraday.get("https://ruby-china.org/api/v3/topics/#{topic['id']}/replies.json")
+  actions = JSON.parse(resp.body)["replies"].select do |reply|
+    reply["action"] == "excellent"
+  end
+  return nil if actions.empty?
+  DateTime.parse(actions.first["created_at"]).to_time
+end
+
 resp = Faraday.get(
   "https://ruby-china.org/api/v3/topics.json",
   { type: "excellent" }
@@ -27,8 +36,8 @@ resp = Faraday.get(
 
 topics = JSON.parse(resp.body)["topics"]
 
-filtered = topics.reject do |topic|
-  Time.now - DateTime.parse(topic["created_at"]).to_time > INTERVAL
+filtered = topics.select do |topic|
+  Time.now - get_excellent_time(topic) < INTERVAL
 end
 
 formatted = filtered.map do |topic|
