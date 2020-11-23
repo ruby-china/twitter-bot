@@ -3,6 +3,8 @@ require "twitter"
 require "json"
 require "date"
 
+finished = File.readlines("finished.log").map(&:chomp).map(&:to_i)
+
 client = Twitter::REST::Client.new do |config|
   config.consumer_key        = ENV["CONSUMER_KEY"]
   config.consumer_secret     = ENV["CONSUMER_SECRET"]
@@ -11,22 +13,11 @@ client = Twitter::REST::Client.new do |config|
   config.access_token_secret = ENV["ACCESS_TOKEN_SECRET"]
 end
 
-INTERVAL = 2 * 60 * 60 # every 2 hours
-
 def get_user(login)
   resp = Faraday.get("https://ruby-china.org/api/v3/users/#{login}.json")
   JSON.parse(resp.body)["user"]
 rescue StandardError
   nil
-end
-
-def get_excellent_time(topic)
-  resp = Faraday.get("https://ruby-china.org/api/v3/topics/#{topic['id']}/replies.json")
-  actions = JSON.parse(resp.body)["replies"].select do |reply|
-    reply["action"] == "excellent"
-  end
-  return nil if actions.empty?
-  DateTime.parse(actions.first["created_at"]).to_time
 end
 
 resp = Faraday.get(
@@ -36,15 +27,18 @@ resp = Faraday.get(
 
 topics = JSON.parse(resp.body)["topics"]
 
-filtered = topics.select do |topic|
-  Time.now - get_excellent_time(topic) < INTERVAL
+filtered = topics.reject do |topic|
+  finished.include? topic["id"]
 end
 
 formatted = filtered.map do |topic|
+  finished << topic["id"]
   user = get_user(topic["user"]["login"]) || {}
   user_name = user["twitter"].to_s != "" ? "@#{user['twitter']}" : topic["user"]["login"]
   "#{topic['title']} by #{user_name}\n\nhttps://ruby-china.org/topics/#{topic['id']}"
 end
+
+File.write("finished.log", finished.join("\n"), mode: 'w')
 
 formatted.each do |tweet|
   client.update(tweet)
