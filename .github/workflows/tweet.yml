@@ -20,6 +20,12 @@ jobs:
           gem install bundler
           bundle install --jobs 4 --retry 3
       - name: Tweet
+        env:
+          CONSUMER_KEY: ${{ secrets.CONSUMER_KEY }}
+          CONSUMER_SECRET: ${{ secrets.CONSUMER_SECRET }}
+          BEARER_TOKEN: ${{ secrets.BEARER_TOKEN }}
+          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          ACCESS_TOKEN_SECRET: ${{ secrets.ACCESS_TOKEN_SECRET }}
         run: |
           ruby relay.rb
       - name: Commit files
