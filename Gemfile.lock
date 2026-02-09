@@ -7,8 +7,12 @@ GEM
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
     equalizer (0.0.11)
-    faraday (1.0.1)
-      multipart-post (>= 1.2, < 3)
+    faraday (2.14.1)
+      faraday-net_http (>= 2.0, < 3.5)
+      json
+      logger
+    faraday-net_http (3.4.2)
+      net-http (~> 0.5)
     ffi (1.13.1)
     ffi-compiler (1.0.1)
       ffi (>= 1.0.0)
@@ -24,10 +28,14 @@ GEM
     http-parser (1.2.2)
       ffi-compiler
     http_parser.rb (0.6.0)
+    json (2.18.1)
+    logger (1.7.0)
     memoizable (0.4.2)
       thread_safe (~> 0.3, >= 0.3.1)
-    multipart-post (2.1.1)
+    multipart-post (2.4.1)
     naught (1.1.0)
+    net-http (0.9.1)
+      uri (>= 0.11.1)
     public_suffix (4.0.6)
     rake (13.0.1)
     simple_oauth (0.3.1)
@@ -46,12 +54,13 @@ GEM
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.7)
+    uri (1.1.1)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
-  faraday (~> 1.0.0)
+  faraday (~> 2.14.1)
   twitter (~> 7.0.0)
 
 BUNDLED WITH
